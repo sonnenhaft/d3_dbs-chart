@@ -12,7 +12,7 @@
 
 6. Pie Chart is Good to have
 
-[task.png]
+![preview](task.png)
 
 ## Run and build
 it is a create-react-app clone, to run use
