@@ -1,0 +1,19 @@
+.transactions-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+}
+
+.transactions-header label {
+  display: block;
+}
+
+.transactions-header__labels {
+  margin-right: 20px;
+}
+
+.transactions-header button {
+  font-weight: bold;
+  margin: 10px;
+  margin-top: 25px;
+}
