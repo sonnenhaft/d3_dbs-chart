@@ -1,0 +1,2 @@
+body{margin:0;padding:0;font-family:sans-serif}button:not([disabled]),label,select:not([disabled]){cursor:pointer}.app-content{display:flex;height:600px}.app-content>*{width:50%;padding:10px}.app-charts{display:flex;flex-direction:column}.app-charts>*{height:50%}.transactions-header{display:flex;align-items:center;padding:16px}.transactions-header label{display:block}.transactions-header__labels{margin-right:20px}.transactions-header button{font-weight:700;margin:25px 10px 10px}
+/*# sourceMappingURL=main.c6d7eb41.chunk.css.map */
