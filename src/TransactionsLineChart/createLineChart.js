@@ -1,7 +1,7 @@
 import Chart from 'chart.js'
 import cardTypes from '../cardTypes'
 
-export default (dom, legend) => new Chart(dom.getContext('2d'), {
+export default (canvasNode, legend) => new Chart(canvasNode.getContext('2d'), {
   type: 'line',
   data: {
     labels: legend,
@@ -40,7 +40,7 @@ export default (dom, legend) => new Chart(dom.getContext('2d'), {
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'Trancations count'
+          labelString: 'Transactions count'
         }
       }]
     }

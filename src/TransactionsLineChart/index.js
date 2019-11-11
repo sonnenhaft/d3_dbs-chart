@@ -1,1 +1,1 @@
-export { default } from './TransactionsLineChart'
+export { TransactionsLineChart, TransactionsLineChart as default } from './TransactionsLineChart'

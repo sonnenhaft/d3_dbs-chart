@@ -13,7 +13,6 @@ export const cardsMap = cardTypes.reduce((cardsMap, { key, value }) => {
   return cardsMap
 }, {})
 
-// in production probably I would extract such function
 export const getRandomTransaction = (type, maxAmount = 1000) => ({
   type: type || cardTypes[Math.floor(Math.random() * 3)].key,
   amount: maxAmount - Math.floor(Math.random() * maxAmount)

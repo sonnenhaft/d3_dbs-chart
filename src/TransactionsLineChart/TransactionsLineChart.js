@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import createLineChart from './createLineChart'
+import React, { useRef, useEffect, useState } from 'react'
 import cardTypes from '../cardTypes'
+import createLineChart from './createLineChart'
 
 const types = cardTypes.map(({ key }) => key)
 const range = [50, 100, 200, 300, 500, 1000, 1001]
@@ -10,35 +10,32 @@ const reversedRange = range.reverse()
 
 const countTransactions = arr => arr.sort().reverse().reduce((data, item) => {
   data[reversedRange.findIndex(value => value <= item)]++
+
   return data
 }, reversedRange.slice().map(() => 0)).reverse()
 
-// I am not checking props here, but in production will
-export default class TransactionsLineChart extends Component {
-  constructor(props) {
-    super(props)
-    this.canvasRef = React.createRef()
-  }
+export const TransactionsLineChart = ({ data }) => {
+  const canvasRef = useRef(null);
+  const [chart, setChart] = useState(null);
 
-  componentDidMount() {
-    this.chart = createLineChart(this.canvasRef.current, legend)
-    this.updateChart()
-  }
+  useEffect(() => {
+    const chart = createLineChart(canvasRef.current, legend);
+    setChart(chart);
 
-  componentWillUpdate() {
-    this.updateChart()
-  }
+    return () => chart.destroy();
+  }, []);
 
-  updateChart() {
-    types.forEach((cardType, index) => {
-      this.chart.data.datasets[index].data = countTransactions(this.props.data
-        .filter(({ type }) => type === cardType).map(({ amount }) => amount))
-    })
+  useEffect(() => {
+    if (!chart) {
+      return;
+    }
 
-    this.chart.update()
-  }
+    types
+      .map(cardType => data.filter(({ type }) => type === cardType).map(({ amount }) => amount))
+      .forEach((amounts, index) => chart.data.datasets[index].data = countTransactions(amounts))
 
-  render() {
-    return <canvas ref={this.canvasRef}/>
-  }
+    chart.update()
+  }, [data, chart]);
+
+  return <canvas ref={ canvasRef } />
 }

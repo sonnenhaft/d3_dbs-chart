@@ -1,34 +1,30 @@
-import React, { Component } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import createPieChart from './createPieChart'
 import cardTypes from '../cardTypes'
 
 const types = cardTypes.map(({ key }) => key)
 
-// I am not checking props here, but in production will
-export default class TransactionsPieChart extends Component {
-  constructor(props) {
-    super(props)
-    this.canvasRef = React.createRef()
-  }
+export const TransactionsPieChart = ({ data }) => {
+  const ref = useRef(null);
+  const [chart, setChart] = useState(null);
+  useEffect(() => {
+    const chart = createPieChart(ref.current);
+    setChart(chart);
 
-  componentDidMount() {
-    this.chart = createPieChart(this.canvasRef.current)
-    this.updateChart()
-  }
+    return () => chart.destroy();
+  }, []);
 
-  componentWillUpdate() {
-    this.updateChart()
-  }
+  useEffect(() => {
+    if (!chart) {
+      return;
+    }
 
-  updateChart() {
-    this.chart.data.datasets[0].data = types.map((cardType) => this.props.data
+    chart.data.datasets[0].data = types.map((cardType) => data
       .filter(({ type }) => type === cardType)
       .reduce((sum, { amount }) => sum + amount, 0))
 
-    this.chart.update()
-  }
+    chart.update()
+  }, [data, chart]);
 
-  render() {
-    return <canvas ref={this.canvasRef}/>
-  }
+  return <canvas ref={ ref } />
 }

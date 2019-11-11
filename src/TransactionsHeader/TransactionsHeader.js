@@ -1,50 +1,42 @@
-import React, { Component } from 'react'
-import './TransactionsHeader.css'
+import React, { useState } from 'react'
 import cardTypes, { getRandomTransaction } from '../cardTypes'
+import './TransactionsHeader.css'
 
-export default class TransactionsHeader extends Component {
-  state = getRandomTransaction()
+export const TransactionsHeader = ({ onTransactionAdded }) => {
+  const [{ type, amount }, setTransaction] = useState(getRandomTransaction());
 
-  sendRandom = () => {
+  const sendRandom = () => {
     const randomValue = getRandomTransaction()
-    this.setState({
-      type: randomValue.type,
-      amount: randomValue.amount
-    })
-    this.onTransactionAdded()
+    setTransaction(randomValue)
+    onTransactionAdded(randomValue)
   }
 
-  onTransactionAdded = () => {
-    const { type, amount } = this.state
-    this.props.onTransactionAdded({ type: type, amount })
-  }
+  const sendTransaction = () => onTransactionAdded({ amount, type });
 
-  render() {
-    return <div className="transactions-header">
-      <div className="transactions-header__labels">
-        {cardTypes.map(({ key, value }) => <label key={key}>
-          <input type="radio" value={key}
-                 checked={this.state.type === key}
-                 onChange={() => this.setState({ type: key })}/>
-          {value}
-        </label>)}
-      </div>
-
-      <div>
-        <label>Amount</label>
-        <input type="number" placeholder="Type amount here"
-               onChange={e => this.setState({ amount: e.target.value })}
-               value={this.state.amount}/>
-      </div>
-
-
-      <div>
-        <button onClick={this.onTransactionAdded}>send</button>
-      </div>
-
-      <div>
-        <button onClick={this.sendRandom}>Send random</button>
-      </div>
+  return <div className="transactions-header">
+    <div className="transactions-header__labels">
+      { cardTypes.map(({ key, value }) => <label key={ key }>
+        <input type="radio" value={ key }
+               checked={ type === key }
+               onChange={ () => setTransaction({ type: key, amount }) } />
+        { value }
+      </label>) }
     </div>
-  }
+
+    <div>
+      <label>Amount</label>
+      <input type="number" placeholder="Type amount here"
+             onChange={ e => setTransaction({ amount: e.target.value, type }) }
+             onKeyUp={ e => e.key === 'Enter' && sendTransaction() }
+             value={ amount } />
+    </div>
+
+    <div>
+      <button onClick={ sendTransaction }>Send</button>
+    </div>
+
+    <div>
+      <button onClick={ sendRandom }>Send random</button>
+    </div>
+  </div>
 }

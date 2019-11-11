@@ -1,51 +1,35 @@
-import React, { Component } from 'react'
-import TransactionsLineChart from './TransactionsLineChart'
-import TransactionsTable from './TransactionsTable'
-import TransactionsHeader from './TransactionsHeader'
-import TransactionsPieChart from './TransactionsPieChart'
-import { getRandomTransaction, DBS_PAYLAH } from './cardTypes'
+import React, { useState } from 'react'
 
 import './App.css'
+import { DBS_PAYLAH, getRandomTransaction } from './cardTypes'
+import TransactionsHeader from './TransactionsHeader'
+import { TransactionsLineChart } from './TransactionsLineChart'
+import TransactionsPieChart from './TransactionsPieChart'
+import TransactionsTable from './TransactionsTable'
 
-const data = []
-for (let i = 0; i < 12; i++) {
-  data.push(getRandomTransaction())
-}
+const App = () => {
+  const [data, setData] = useState(() => [
+    ...Array.from(new Array(142)).map(() => getRandomTransaction()),
+    ...Array.from(new Array(8)).map(() => getRandomTransaction(DBS_PAYLAH, 100))
+  ])
 
-for (let i = 0; i < 8; i++) {
-  data.push(getRandomTransaction(DBS_PAYLAH, 100))
-}
+  return <>
+    <TransactionsHeader onTransactionAdded={ value => setData([value, ...data]) } />
+    <div className="app-content">
+      <div>
+        <TransactionsTable data={ data } />
+      </div>
 
-class App extends Component {
-  state = { data }
-
-  onTransactionAdded = (value) => {
-    const data = this.state.data.slice()
-    data.unshift(value)
-    this.setState({ data })
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <TransactionsHeader onTransactionAdded={this.onTransactionAdded}/>
-        <div className="app-content">
-          <div>
-            <TransactionsTable data={this.state.data}/>
-          </div>
-
-          <div className="app-charts">
-            <div>
-              <TransactionsLineChart data={this.state.data}/>
-            </div>
-            <div>
-              <TransactionsPieChart data={this.state.data}/>
-            </div>
-          </div>
+      <div className="app-charts">
+        <div>
+          <TransactionsLineChart data={ data } />
         </div>
-      </React.Fragment>
-    )
-  }
+        <div>
+          <TransactionsPieChart data={ data } />
+        </div>
+      </div>
+    </div>
+  </>
 }
 
 export default App

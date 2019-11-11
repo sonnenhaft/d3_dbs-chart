@@ -1,7 +1,7 @@
 import Chart from 'chart.js'
 import cardTypes from '../cardTypes'
 
-export default (dom) => new Chart(dom.getContext('2d'), {
+export default canvasNode => new Chart(canvasNode.getContext('2d'), {
   type: 'pie',
   data: {
     datasets: [{

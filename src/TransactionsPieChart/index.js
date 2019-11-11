@@ -1,1 +1,1 @@
-export { default } from './TransactionsPieChart'
+export { TransactionsPieChart, TransactionsPieChart as default } from './TransactionsPieChart'

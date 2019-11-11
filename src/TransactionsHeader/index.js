@@ -1,1 +1,1 @@
-export { default } from './TransactionsHeader'
+export { TransactionsHeader, TransactionsHeader as default } from './TransactionsHeader'
